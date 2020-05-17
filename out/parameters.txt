@@ -1,8 +1,7 @@
 Network parameters
 ------------------------
 Alpha:  0.0001
-Number of hidden layers layers:  1
+Number of hidden layers:  1
 Number of neurons on each hidden layer:  35
 Activation Function:  logistic
-Epochs:  550
-<method-wrapper '__getattribute__' of MLPClassifier object at 0x11b567be0>
+Epochs:  513

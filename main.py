@@ -15,8 +15,8 @@ iterations = 1000
 '''
 
 #Read data for training
-dataAND = pd.read_csv("data/problemAND.csv", header=None)
 dataChar = pd.read_csv("data/caracteres-limpo.csv", header=None)
+dataAND = pd.read_csv("data/problemAND.csv", header=None)
 
 #Reading/handling data test
 x_test = pd.read_csv("data/caracteres-ruido.csv", header=None)
@@ -40,8 +40,10 @@ y_train = y_train.select_dtypes(include=[object])
 le = preprocessing.LabelEncoder()
 y_train = y_train.apply(le.fit_transform)
 
-#Create the MLP with the parameters setted at the begining of the program
-mlp = MLPClassifier(hidden_layer_sizes=(35), activation='logistic', alpha=0.0001, max_iter=1000, batch_size=21)
+#Create the MLP with the parameters setted and
+#Create a file to store the errors of the MLP
+sys.stdout=open("out/errors.txt","w")
+mlp = MLPClassifier(hidden_layer_sizes=(35), activation='logistic', alpha=0.0001, max_iter=1000, batch_size=21, verbose=True)
 
 #Start the network's training process
 mlp.fit(x_train, y_train.values.ravel())
@@ -50,9 +52,10 @@ mlp.fit(x_train, y_train.values.ravel())
 prediction = mlp.predict(x_test)
 
 #Print the results and confusion matrix for analysis
+sys.stdout=open("out/annalysis.txt", "w")
 print(classification_report(y_train, prediction) + "\n")
 print(confusion_matrix(y_train, prediction))
-
+sys.stdout.close()
 
 ###################################################
 #Open file to store parameters of the network
@@ -61,7 +64,7 @@ sys.stdout=open("out/parameters.txt","w")
 #Print the initial parameters of the MLP
 print("Network parameters\n------------------------")
 print('Alpha: ', mlp.alpha)
-print('Number of hidden layers layers: ', mlp.n_layers_ - 2)
+print('Number of hidden layers: ', mlp.n_layers_ - 2)
 print('Number of neurons on each hidden layer: ', mlp.hidden_layer_sizes)
 print('Activation Function: ', mlp.activation)
 print('Epochs: ', mlp.n_iter_)
@@ -81,7 +84,42 @@ print(mlp.coefs_)
 
 #Close the file
 sys.stdout.close()
+##########################################################
+
+##########################################################
+#Open file to store classification results of the network
+sys.stdout=open("out/predictions.txt","w")
+
+#Print the classification results
+print("Classifications:")
+print(type(y_train))
+
+for c in prediction:
+    for k in y_train:
+        if c==0:
+            print("Expected: ", k, " Predicted: A")
+        if c==1:
+            print("B")
+        if c==2:
+            print("C")
+        if c==3:
+            print("D")
+        if c==4:
+            print("E")
+        if c==5:
+            print("J")
+        if c==6:
+            print("K")
+
+#Close the file
+sys.stdout.close()
 ##################################################
+
+
+
+####
+# IMPRIMIR PESOS INICIAIS
+# MELHORAR O PRINT DOS PESOS FINAIS
 
 
 
